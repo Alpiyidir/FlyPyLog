@@ -3,7 +3,6 @@ from tkinter import *
 from tkinter import messagebox
 import os
 import shutil
-import sys
 
 # Window Setup
 dark2 = "#103B82"
