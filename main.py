@@ -18,7 +18,12 @@ root.geometry("1000x500")
 root.configure(bg="white")
 root.resizable(False, False)
 
-books = []
+
+def addBook():
+    name = bNameEntry.get()
+    base = str(os.path.abspath(os.getcwd())) + "/Books/"
+    os.mkdir(base + str(name))
+    BooksBox.insert("end", name)
 
 def Delete():
     selecind = BooksBox.curselection()
@@ -32,48 +37,38 @@ def Delete():
         delet = str(os.path.abspath(os.getcwd())) + "/Books/" + str(toDel)
         shutil.rmtree(delet)
         BooksBox.delete(fselec, last=None)
-    listBoxer()
 
-def listBoxer():
-    books.clear()
-    BooksBox.delete(0, "end")
-    base = str(os.path.abspath(os.getcwd())) + "/Books"
-    for entry in os.listdir(base):
-        if os.path.isdir(os.path.join(base, entry)):
-            books.append(entry)
-    BooksBox.insert(END, *books)
-
-def addBook():
-    name = bNameEntry.get()
-    base = str(os.path.abspath(os.getcwd())) + "/Books/"
-    os.mkdir(base + str(name))
-    BooksBox.insert("end", name)
-
+# Color Change on Hover
 def on_enterF(e):
     FileB['background'] = med
 def on_leaveF(e):
     FileB['background'] = dark2
-
 
 def on_enterD(e):
     Del['background'] = med
 def on_leaveD(e):
     Del['background'] = dark2
 
-
 def on_enterN(e):
     NB['background'] = med
 def on_leaveN(e):
     NB['background'] = dark2
 
-
-
-
+# Ye Mighty Listbox
 BooksBox = Listbox(root, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=80, selectbackground=light2)
 BooksBox.place(x=70, y=90)
 
-listBoxer()
+# Listbox File Checking on Start
+books = []
+books.clear()
+BooksBox.delete(0, "end")
+base = str(os.path.abspath(os.getcwd())) + "/Books"
+for entry in os.listdir(base):
+    if os.path.isdir(os.path.join(base, entry)):
+        books.append(entry)
+BooksBox.insert(END, *books)
 
+#Menu Buttons
 FileB = Button(root, font=("Arial", 12), text='Files', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=15, height=2)
 FileB.place(x=0, y=0)
 FileB.bind("<Enter>", on_enterF)
