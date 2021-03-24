@@ -10,8 +10,8 @@ light1 = "#EBDFD8"
 
 root = Tk()
 root.title("FlyPyLog")
-root.geometry("1000x700")
-root.configure(bg=light1)
+root.geometry("1000x500")
+root.configure(bg="white")
 root.resizable(False, False)
 
 
@@ -62,5 +62,9 @@ Can1.place(x=420, y=0)
 
 Logo = Label(root, font=("Arial", 18, "bold"), text="FlyPyLog", bg=light2, fg=dark2)
 Logo.place(x=800, y=5)
+
+Books = Listbox(root, bg="light gray", bd=0, height=25, width=80)
+Books.place(x=70, y=70)
+
 
 root.mainloop()
