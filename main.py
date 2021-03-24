@@ -20,17 +20,17 @@ root.resizable(False, False)
 books = []
 
 def Delete():
-    selecind = Books.curselection()
+    selecind = BooksBox.curselection()
     fselec = list(selecind)[0]
     print(selecind)
     delyn = messagebox.askyesno(title="Delete", message="Do you wish to proceed with the deletion?")
     print(delyn)
     if delyn == True:
-        toDel = Books.get(selecind)
+        toDel = BooksBox.get(selecind)
         print(toDel)
         delet = str(os.path.abspath(os.getcwd())) + "/Books/" + str(toDel[0])
         shutil.rmtree(delet)
-        Books.delete(fselec, last=None)
+        BooksBox.delete(fselec, last=None)
     lBoxer()
 
 def lBoxer():
@@ -39,7 +39,7 @@ def lBoxer():
     for entry in os.listdir(base):
         if os.path.isdir(os.path.join(base, entry)):
             books.append(entry)
-    Books.insert("end", books)
+    BooksBox.insert("end", books)
 
 def on_enterF(e):
     FileB['background'] = med
@@ -65,8 +65,8 @@ def on_leaveN(e):
     NB['background'] = dark2
 
 
-Books = Listbox(root, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=80, selectbackground=light2)
-Books.place(x=70, y=90)
+BooksBox = Listbox(root, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=80, selectbackground=light2)
+BooksBox.place(x=70, y=90)
 
 lBoxer()
 
