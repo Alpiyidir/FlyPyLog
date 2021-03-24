@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 import os
 import shutil
+import sys
 
 # Window Setup
 dark2 = "#103B82"
@@ -22,24 +23,31 @@ books = []
 def Delete():
     selecind = BooksBox.curselection()
     fselec = list(selecind)[0]
-    print(selecind)
-    delyn = messagebox.askyesno(title="Delete", message="Do you wish to proceed with the deletion?")
-    print(delyn)
-    if delyn == True:
+    print(fselec)
+    delYN = messagebox.askyesno(title="Delete", message="Do you wish to proceed with the deletion?")
+    print(delYN)
+    if delYN == True:
         toDel = BooksBox.get(selecind)
         print(toDel)
-        delet = str(os.path.abspath(os.getcwd())) + "/Books/" + str(toDel[0])
+        delet = str(os.path.abspath(os.getcwd())) + "/Books/" + str(toDel)
         shutil.rmtree(delet)
         BooksBox.delete(fselec, last=None)
-    lBoxer()
+    listBoxer()
 
-def lBoxer():
+def listBoxer():
     books.clear()
+    BooksBox.delete(0, 10000000000000000000000)
     base = str(os.path.abspath(os.getcwd())) + "/Books"
     for entry in os.listdir(base):
         if os.path.isdir(os.path.join(base, entry)):
             books.append(entry)
-    BooksBox.insert("end", books)
+    BooksBox.insert(END, *books)
+
+def addBook():
+    modulename = "BookAdder"
+    if modulename not in sys.modules:
+        import BookAdder as BA
+        BooksBox.insert("end", str(BA.create()))
 
 def on_enterF(e):
     FileB['background'] = med
@@ -68,7 +76,7 @@ def on_leaveN(e):
 BooksBox = Listbox(root, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=80, selectbackground=light2)
 BooksBox.place(x=70, y=90)
 
-lBoxer()
+listBoxer()
 
 FileB = Button(root, font=("Arial", 12), text='Files', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=15, height=2)
 FileB.place(x=0, y=0)
@@ -80,7 +88,7 @@ Del.place(x=140, y=0)
 Del.bind("<Enter>", on_enterD)
 Del.bind("<Leave>", on_leaveD)
 
-NB = Button(root, font=("Arial", 12), text='New Book', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=15, height=2)
+NB = Button(root, font=("Arial", 12), text='New Book', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=15, height=2, command=addBook)
 NB.place(x=280, y=0)
 NB.bind("<Enter>", on_enterN)
 NB.bind("<Leave>", on_leaveN)
