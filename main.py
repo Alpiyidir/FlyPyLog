@@ -36,7 +36,7 @@ def Delete():
 
 def listBoxer():
     books.clear()
-    BooksBox.delete(0, 10000000000000000000000)
+    BooksBox.delete(0, "end")
     base = str(os.path.abspath(os.getcwd())) + "/Books"
     for entry in os.listdir(base):
         if os.path.isdir(os.path.join(base, entry)):
@@ -44,33 +44,29 @@ def listBoxer():
     BooksBox.insert(END, *books)
 
 def addBook():
-    modulename = "BookAdder"
-    if modulename not in sys.modules:
-        import BookAdder as BA
-        BooksBox.insert("end", str(BA.create()))
+    name = bNameEntry.get()
+    base = str(os.path.abspath(os.getcwd())) + "/Books/"
+    os.mkdir(base + str(name))
+    BooksBox.insert("end", name)
 
 def on_enterF(e):
     FileB['background'] = med
-
-
 def on_leaveF(e):
     FileB['background'] = dark2
 
 
 def on_enterD(e):
     Del['background'] = med
-
-
 def on_leaveD(e):
     Del['background'] = dark2
 
 
 def on_enterN(e):
     NB['background'] = med
-
-
 def on_leaveN(e):
     NB['background'] = dark2
+
+
 
 
 BooksBox = Listbox(root, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=80, selectbackground=light2)
@@ -101,4 +97,12 @@ Logo.place(x=800, y=5)
 
 lBoxLabel = Label(root, font=("Arial", 12, "bold"), text="My Books", bg="white", fg=dark2)
 lBoxLabel.place(x=75, y=60)
+
+# Book Name Entry
+bNameLabel = Label(root, font=("Arial", 10, "bold"), text="Name of new book?", bg=light2, fg=dark2)
+bNameLabel.place(x=430, y=0)
+
+bNameEntry = Entry(root, font=("Arial", 10, "bold"), bg="white", fg="black")
+bNameEntry.place(x=430, y=23)
+
 root.mainloop()
