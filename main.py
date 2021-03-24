@@ -13,7 +13,7 @@ light1 = "#EBDFD8"
 
 root = Tk()
 root.title("FlyPyLog")
-root.geometry("1000x500")
+root.geometry("800x500")
 root.configure(bg="white")
 root.resizable(False, False)
 
@@ -53,9 +53,15 @@ def on_enterN(e):
 def on_leaveN(e):
     NB['background'] = dark2
 
+def on_enterO(e):
+    Open['background'] = med
+def on_leaveO(e):
+    Open['background'] = dark2
+
 # Ye Mighty Listbox
-BooksBox = Listbox(root, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=80, selectbackground=light2)
+BooksBox = Listbox(root, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=50, selectbackground=light2)
 BooksBox.place(x=70, y=90)
+BooksBox.yview()
 
 # Listbox File Checking on Start
 books = []
@@ -87,16 +93,22 @@ Can1 = Canvas(bg=light2, borderwidth=0, height=43.5, width=200000, highlightthic
 Can1.place(x=420, y=0)
 
 Logo = Label(root, font=("Arial", 18, "bold"), text="FlyPyLog", bg=light2, fg=dark2)
-Logo.place(x=800, y=5)
+Logo.place(x=600, y=5)
 
 lBoxLabel = Label(root, font=("Arial", 12, "bold"), text="My Books", bg="white", fg=dark2)
 lBoxLabel.place(x=75, y=60)
 
-# Book Name Entry
+# New Book Name Entry
 bNameLabel = Label(root, font=("Arial", 10, "bold"), text="Name of new book?", bg=light2, fg=dark2)
 bNameLabel.place(x=430, y=0)
 
 bNameEntry = Entry(root, font=("Arial", 10, "bold"), bg="white", fg="black")
 bNameEntry.place(x=430, y=23)
+
+# Opening in Flight Logger
+Open = Button(root, font=("Arial", 12), text='Open In Flight Logger', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=20, height=1)
+Open.place(x=70, y=400)
+Open.bind("<Enter>", on_enterO)
+Open.bind("<Leave>", on_leaveO)
 
 root.mainloop()
