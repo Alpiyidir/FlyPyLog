@@ -13,7 +13,7 @@ light1 = "#EBDFD8"
 
 root = Tk()
 root.title("FlyPyLog")
-root.geometry("1000x700")
+root.geometry("350x500")
 root.configure(bg="white")
 root.resizable(False, False)
 
