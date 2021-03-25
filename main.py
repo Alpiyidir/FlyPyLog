@@ -24,8 +24,8 @@ def addBook():
     os.mkdir(base + str(name))
     BooksBox.insert("end", name)
 
-    originalPath = str(os.path.abspath(os.getcwd())) + "/FlightLoggerMenu.py"
-    newPath = base + str(name) + "/FlightLoggerMenu.py"
+    originalPath = str(os.path.abspath(os.getcwd())) + "/FlightLogger.py"
+    newPath = base + str(name) + "/FlightLogger.py"
     shutil.copyfile(originalPath, newPath)
 
 def Delete():
@@ -40,6 +40,10 @@ def Delete():
         delet = str(os.path.abspath(os.getcwd())) + "/Books/" + str(toDel)
         shutil.rmtree(delet)
         BooksBox.delete(fselec, last=None)
+
+def OpenFilePath():
+    base = str(os.path.abspath(os.getcwd()))
+
 
 # Color Change on Hover
 def on_enterF(e):
@@ -78,7 +82,7 @@ for entry in os.listdir(base):
 BooksBox.insert(END, *books)
 
 #Menu Buttons
-FileB = Button(root, font=("Arial", 12), text='Files', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=15, height=2)
+FileB = Button(root, font=("Arial", 12), text='Files', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=15, height=2, command=OpenFilePath)
 FileB.place(x=0, y=0)
 FileB.bind("<Enter>", on_enterF)
 FileB.bind("<Leave>", on_leaveF)
