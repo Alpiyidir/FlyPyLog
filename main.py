@@ -43,6 +43,7 @@ def Delete():
 
 def OpenFilePath():
     base = str(os.path.abspath(os.getcwd()))
+    os.startfile(base)
 
 
 # Color Change on Hover
