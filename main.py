@@ -19,14 +19,6 @@ root.configure(bg="white")
 root.resizable(False, False)
 
 
-class GradientFrame(tkinter.Canvas):
-    '''A gradient frame which uses a canvas to draw the background'''
-    def __init__(self, parent, color1="red", color2="black", **kwargs):
-        tkinter.Canvas.__init__(self, parent, **kwargs)
-        self._color1 = color1
-        self._color2 = color2
-        self.bind("<Configure>", self._draw_gradient)
-
     def _draw_gradient(self, event=None):
         '''Draw the gradient'''
         self.delete("gradient")
@@ -61,7 +53,6 @@ def addBook():
     newPath = base + str(name) + "/FlightLoggerMenu.py"
     shutil.copyfile(originalPath, newPath)
 
-
 def Delete():
     selecind = BooksBox.curselection()
     try:
@@ -79,7 +70,6 @@ def Delete():
         shutil.rmtree(delet)
         BooksBox.delete(fselec, last=None)
 
-
 def OpenFilePath():
     base = str(os.path.abspath(os.getcwd()))
     os.startfile(base)
@@ -88,39 +78,26 @@ def OpenFilePath():
 # Color Change on Hover
 def on_enterF(e):
     FileB['background'] = med
-
-
 def on_leaveF(e):
     FileB['background'] = dark2
 
-
 def on_enterD(e):
     Del['background'] = med
-
-
 def on_leaveD(e):
     Del['background'] = dark2
 
-
 def on_enterN(e):
     NB['background'] = med
-
-
 def on_leaveN(e):
     NB['background'] = dark2
 
-
 def on_enterO(e):
     Open['background'] = med
-
-
 def on_leaveO(e):
     Open['background'] = dark2
 
-
 # Ye Mighty Listbox
-BooksBox = Listbox(root, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=50,
-                   selectbackground=light2)
+BooksBox = Listbox(root, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=50, selectbackground=light2)
 BooksBox.place(x=70, y=90)
 BooksBox.yview()
 
@@ -134,21 +111,18 @@ for entry in os.listdir(base):
         books.append(entry)
 BooksBox.insert(END, *books)
 
-# Menu Buttons
-FileB = Button(root, font=("Arial", 12), text='Files', highlightthickness=0, bg=dark2, fg='white', borderwidth=0,
-               width=15, height=2, command=OpenFilePath)
+#Menu Buttons
+FileB = Button(root, font=("Arial", 12), text='Files', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=15, height=2, command=OpenFilePath)
 FileB.place(x=0, y=0)
 FileB.bind("<Enter>", on_enterF)
 FileB.bind("<Leave>", on_leaveF)
 
-Del = Button(root, font=("Arial", 12), text='Delete', highlightthickness=0, bg=dark2, fg='white', borderwidth=0,
-             width=15, height=2, command=Delete)
+Del = Button(root, font=("Arial", 12), text='Delete', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=15, height=2, command=Delete)
 Del.place(x=140, y=0)
 Del.bind("<Enter>", on_enterD)
 Del.bind("<Leave>", on_leaveD)
 
-NB = Button(root, font=("Arial", 12), text='New Book', highlightthickness=0, bg=dark2, fg='white', borderwidth=0,
-            width=15, height=2, command=addBook)
+NB = Button(root, font=("Arial", 12), text='New Book', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=15, height=2, command=addBook)
 NB.place(x=280, y=0)
 NB.bind("<Enter>", on_enterN)
 NB.bind("<Leave>", on_leaveN)
@@ -170,8 +144,7 @@ bNameEntry = Entry(root, font=("Arial", 10, "bold"), bg="white", fg="black")
 bNameEntry.place(x=430, y=23)
 
 # Opening in Flight Logger
-Open = Button(root, font=("Arial", 12), text='Open In Flight Logger', highlightthickness=0, bg=dark2, fg='white',
-              borderwidth=0, width=20, height=1)
+Open = Button(root, font=("Arial", 12), text='Open In Flight Logger', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=20, height=1)
 Open.place(x=70, y=400)
 Open.bind("<Enter>", on_enterO)
 Open.bind("<Leave>", on_leaveO)

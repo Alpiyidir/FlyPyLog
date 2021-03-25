@@ -20,4 +20,6 @@ root.resizable(False, False)
 Can1 = Canvas(bg=light2, borderwidth=0, height=43.5, width=200000, highlightthickness=0)
 Can1.place(x=0, y=0)
 
+
+
 root.mainloop()
