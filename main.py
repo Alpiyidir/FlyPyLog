@@ -18,35 +18,6 @@ root.geometry("800x500")
 root.configure(bg="white")
 root.resizable(False, False)
 
-
-class GradientFrame(tkinter.Canvas):
-    '''A gradient frame which uses a canvas to draw the background'''
-    def __init__(self, parent, color1="red", color2="black", **kwargs):
-        tkinter.Canvas.__init__(self, parent, **kwargs)
-        self._color1 = color1
-        self._color2 = color2
-        self.bind("<Configure>", self._draw_gradient)
-
-    def _draw_gradient(self, event=None):
-        '''Draw the gradient'''
-        self.delete("gradient")
-        width = self.winfo_width()
-        height = self.winfo_height()
-        limit = width
-        (r1,g1,b1) = self.winfo_rgb(self._color1)
-        (r2,g2,b2) = self.winfo_rgb(self._color2)
-        r_ratio = float(r2-r1) / limit
-        g_ratio = float(g2-g1) / limit
-        b_ratio = float(b2-b1) / limit
-
-        for i in range(limit):
-            nr = int(r1 + (r_ratio * i))
-            ng = int(g1 + (g_ratio * i))
-            nb = int(b1 + (b_ratio * i))
-            color = "#%4.4x%4.4x%4.4x" % (nr,ng,nb)
-            self.create_line(i,0,i,height, tags=("gradient",), fill=color)
-        self.lower("gradient")
-
 def addBook():
     name = bNameEntry.get()
     base = str(os.path.abspath(os.getcwd())) + "/Books/"
@@ -55,6 +26,7 @@ def addBook():
     except WindowsError:
         print("Couldn't create file, file already exists or no name was specified. (root directory)")
         messagebox.showerror(title="lol no", message="Couldn't create file, file already exists or no name was specified. (root directory)")
+        return
     BooksBox.insert("end", name)
 
     originalPath = str(os.path.abspath(os.getcwd())) + "/FlightLoggerMenu.py"
@@ -67,7 +39,9 @@ def Delete():
     try:
         fselec = list(selecind)[0]
     except IndexError:
-        return print("No item selected to delete. IndexError")
+        print("No item selected to delete. IndexError")
+        messagebox.showerror(title="lol no", message="No item selected to delete. IndexError")
+        return
 
     print(fselec)
     delYN = messagebox.askyesno(title="Delete", message="Do you wish to proceed with the deletion?")
@@ -83,6 +57,11 @@ def Delete():
 def OpenFilePath():
     base = str(os.path.abspath(os.getcwd()))
     os.startfile(base)
+
+
+def OpenFlightLogger():
+    BooksBoxIndex = BooksBox.curselection()[0]
+    LogName = BooksBox.get(BooksBoxIndex)
 
 
 # Color Change on Hover
@@ -171,7 +150,7 @@ bNameEntry.place(x=430, y=23)
 
 # Opening in Flight Logger
 Open = Button(root, font=("Arial", 12), text='Open In Flight Logger', highlightthickness=0, bg=dark2, fg='white',
-              borderwidth=0, width=20, height=1)
+              borderwidth=0, width=20, height=1, command=OpenFlightLogger)
 Open.place(x=70, y=400)
 Open.bind("<Enter>", on_enterO)
 Open.bind("<Leave>", on_leaveO)
