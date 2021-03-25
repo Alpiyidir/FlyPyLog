@@ -21,7 +21,10 @@ root.resizable(False, False)
 def addBook():
     name = bNameEntry.get()
     base = str(os.path.abspath(os.getcwd())) + "/Books/"
-    os.mkdir(base + str(name))
+    try:
+        os.mkdir(base + str(name))
+    except WindowsError:
+        return print("Couldn't create file, file already exists or no name was specified. (root directory)")
     BooksBox.insert("end", name)
 
     originalPath = str(os.path.abspath(os.getcwd())) + "/FlightLogger.py"
@@ -30,7 +33,11 @@ def addBook():
 
 def Delete():
     selecind = BooksBox.curselection()
-    fselec = list(selecind)[0]
+    try:
+        fselec = list(selecind)[0]
+    except IndexError:
+        return print("No item selected to delete. IndexError")
+
     print(fselec)
     delYN = messagebox.askyesno(title="Delete", message="Do you wish to proceed with the deletion?")
     print(delYN)
