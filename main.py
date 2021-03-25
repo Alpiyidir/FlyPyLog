@@ -1,4 +1,5 @@
 # Imports
+import tkinter
 from tkinter import *
 from tkinter import messagebox
 import os
@@ -18,17 +19,46 @@ root.configure(bg="white")
 root.resizable(False, False)
 
 
+class GradientFrame(tkinter.Canvas):
+    '''A gradient frame which uses a canvas to draw the background'''
+    def __init__(self, parent, color1="red", color2="black", **kwargs):
+        tkinter.Canvas.__init__(self, parent, **kwargs)
+        self._color1 = color1
+        self._color2 = color2
+        self.bind("<Configure>", self._draw_gradient)
+
+    def _draw_gradient(self, event=None):
+        '''Draw the gradient'''
+        self.delete("gradient")
+        width = self.winfo_width()
+        height = self.winfo_height()
+        limit = width
+        (r1,g1,b1) = self.winfo_rgb(self._color1)
+        (r2,g2,b2) = self.winfo_rgb(self._color2)
+        r_ratio = float(r2-r1) / limit
+        g_ratio = float(g2-g1) / limit
+        b_ratio = float(b2-b1) / limit
+
+        for i in range(limit):
+            nr = int(r1 + (r_ratio * i))
+            ng = int(g1 + (g_ratio * i))
+            nb = int(b1 + (b_ratio * i))
+            color = "#%4.4x%4.4x%4.4x" % (nr,ng,nb)
+            self.create_line(i,0,i,height, tags=("gradient",), fill=color)
+        self.lower("gradient")
+
 def addBook():
     name = bNameEntry.get()
     base = str(os.path.abspath(os.getcwd())) + "/Books/"
     try:
         os.mkdir(base + str(name))
     except WindowsError:
-        return print("Couldn't create file, file already exists or no name was specified. (root directory)")
+        print("Couldn't create file, file already exists or no name was specified. (root directory)")
+        messagebox.showerror(title="lol no", message="Couldn't create file, file already exists or no name was specified. (root directory)")
     BooksBox.insert("end", name)
 
-    originalPath = str(os.path.abspath(os.getcwd())) + "/FlightLogger.py"
-    newPath = base + str(name) + "/FlightLogger.py"
+    originalPath = str(os.path.abspath(os.getcwd())) + "/FlightLoggerMenu.py"
+    newPath = base + str(name) + "/FlightLoggerMenu.py"
     shutil.copyfile(originalPath, newPath)
 
 def Delete():
