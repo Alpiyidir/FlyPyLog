@@ -24,6 +24,10 @@ def addBook():
     os.mkdir(base + str(name))
     BooksBox.insert("end", name)
 
+    originalPath = str(os.path.abspath(os.getcwd())) + "/FlightLogger.py"
+    newPath = base + str(name) + "/FlightLogger.py"
+    shutil.copyfile(originalPath, newPath)
+
 def Delete():
     selecind = BooksBox.curselection()
     fselec = list(selecind)[0]
