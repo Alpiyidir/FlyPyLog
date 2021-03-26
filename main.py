@@ -133,8 +133,8 @@ NB.place(x=280, y=0)
 NB.bind("<Enter>", on_enterN)
 NB.bind("<Leave>", on_leaveN)
 
-Can1 = Canvas(bg=light2, borderwidth=0, height=43.5, width=200000, highlightthickness=0)
-Can1.place(x=420, y=0)
+Can = Canvas(root, bg=light2, borderwidth=0, height=43.5, width=200000, highlightthickness=0)
+Can.place(x=420, y=0)
 
 Logo = Label(root, font=("Arial", 18, "bold"), text="FlyPyLog", bg=light2, fg=dark2)
 Logo.place(x=600, y=5)
