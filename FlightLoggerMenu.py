@@ -4,6 +4,7 @@ from tkinter import messagebox
 import os
 import shutil
 
+
 # Window Setup
 def createWindowForBook(nameOfBook):
     dark2 = "#103B82"
@@ -18,25 +19,36 @@ def createWindowForBook(nameOfBook):
     windowName.geometry("400x500")
     windowName.configure(bg="white")
     windowName.resizable(False, False)
+    # Error Checking
+    currentBookLocation = os.getcwd() + f'\Books\{nameOfBook}'
+
+    while True:
+        if not os.path.isdir(currentBookLocation):
+            messagebox.showerror(title="lol no", message="This book no longer exists.")
+            windowName.destroy()
 
     # Color Change on Hover
     def on_enterV(e):
         View['background'] = med
+
     def on_leaveV(e):
         View['background'] = dark2
 
     def on_enterE(e):
         Edit['background'] = med
+
     def on_leaveE(e):
         Edit['background'] = dark2
 
     def on_enterN(e):
         NewLog['background'] = med
+
     def on_leaveN(e):
         NewLog['background'] = dark2
 
     def on_enterD(e):
         Del['background'] = med
+
     def on_leaveD(e):
         Del['background'] = dark2
 
@@ -47,26 +59,31 @@ def createWindowForBook(nameOfBook):
     Logo2.place(x=10, y=5)
 
     # Ye 2nd Mighty Listbox
-    BooksBox = Listbox(windowName, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=20, selectbackground=light2)
+    BooksBox = Listbox(windowName, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=20,
+                       selectbackground=light2)
     BooksBox.place(x=40, y=90)
     BooksBox.yview()
 
-    View = Button(windowName, font=("Arial", 12), text='View', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=10, height=1)
+    View = Button(windowName, font=("Arial", 12), text='View', highlightthickness=0, bg=dark2, fg='white',
+                  borderwidth=0, width=10, height=1)
     View.place(x=240, y=90)
     View.bind("<Enter>", on_enterV)
     View.bind("<Leave>", on_leaveV)
 
-    Edit = Button(windowName, font=("Arial", 12), text='Edit', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=10, height=1)
+    Edit = Button(windowName, font=("Arial", 12), text='Edit', highlightthickness=0, bg=dark2, fg='white',
+                  borderwidth=0, width=10, height=1)
     Edit.place(x=240, y=120)
     Edit.bind("<Enter>", on_enterE)
     Edit.bind("<Leave>", on_leaveE)
 
-    NewLog = Button(windowName, font=("Arial", 12), text='New Log', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=10, height=1)
+    NewLog = Button(windowName, font=("Arial", 12), text='New Log', highlightthickness=0, bg=dark2, fg='white',
+                    borderwidth=0, width=10, height=1)
     NewLog.place(x=240, y=150)
     NewLog.bind("<Enter>", on_enterN)
     NewLog.bind("<Leave>", on_leaveN)
 
-    Del = Button(windowName, font=("Arial", 12), text='Delete', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=10, height=1)
+    Del = Button(windowName, font=("Arial", 12), text='Delete', highlightthickness=0, bg=dark2, fg='white',
+                 borderwidth=0, width=10, height=1)
     Del.place(x=240, y=180)
     Del.bind("<Enter>", on_enterD)
     Del.bind("<Leave>", on_leaveD)

@@ -30,10 +30,6 @@ def addBook():
         return
     BooksBox.insert("end", name)
 
-    originalPath = str(os.path.abspath(os.getcwd())) + "/FlightLoggerMenu.py"
-    newPath = base + str(name) + "/FlightLoggerMenu.py"
-    shutil.copyfile(originalPath, newPath)
-
 
 def Delete():
     selecind = BooksBox.curselection()
