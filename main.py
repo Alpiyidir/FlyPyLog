@@ -31,6 +31,8 @@ def addBook():
     BooksBox.insert("end", name)
 
 
+    fileChecking()
+
 def Delete():
     selecind = BooksBox.curselection()
     try:
@@ -50,16 +52,28 @@ def Delete():
         shutil.rmtree(delet)
         BooksBox.delete(fselec, last=None)
 
+    fileChecking()
+
 
 def OpenFilePath():
     base = str(os.path.abspath(os.getcwd()))
     os.startfile(base)
 
+    fileChecking()
 
 def OpenFlightLogger():
-    BooksBoxIndex = BooksBox.curselection()[0]
+    try:
+        BooksBoxIndex = BooksBox.curselection()[0]
+    except IndexError:
+        print("No item selected to open flight logger for. IndexError")
+        messagebox.showerror(title="lol no", message="No file selected to open in Flight Logger.")
+        return
+
     LogName = BooksBox.get(BooksBoxIndex)
     FlightLoggerMenu.createWindowForBook(LogName)
+
+    fileChecking()
+
 
 # Color Change on Hover
 def on_enterF(e):
@@ -101,14 +115,16 @@ BooksBox.place(x=70, y=90)
 BooksBox.yview()
 
 # Listbox File Checking on Start
-books = []
-books.clear()
-BooksBox.delete(0, "end")
-base = str(os.path.abspath(os.getcwd())) + "/Books"
-for entry in os.listdir(base):
-    if os.path.isdir(os.path.join(base, entry)):
-        books.append(entry)
-BooksBox.insert(END, *books)
+def fileChecking():
+    books = []
+    books.clear()
+    BooksBox.delete(0, "end")
+    base = str(os.path.abspath(os.getcwd())) + "/Books"
+    for entry in os.listdir(base):
+        if os.path.isdir(os.path.join(base, entry)):
+            books.append(entry)
+    BooksBox.insert(END, *books)
+fileChecking()
 
 # Menu Buttons
 FileB = Button(root, font=("Arial", 12), text='Files', highlightthickness=0, bg=dark2, fg='white', borderwidth=0,
@@ -151,5 +167,6 @@ Open = Button(root, font=("Arial", 12), text='Open In Flight Logger', highlightt
 Open.place(x=70, y=400)
 Open.bind("<Enter>", on_enterO)
 Open.bind("<Leave>", on_leaveO)
+
 
 root.mainloop()
