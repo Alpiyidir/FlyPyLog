@@ -19,6 +19,11 @@ root.geometry("800x500")
 root.configure(bg="white")
 root.resizable(False, False)
 
+
+if os.path.isdir(os.getcwd() + "\Books") != True:
+    os.mkdir("Books")
+    print("Created \Books directory")
+
 def addBook():
     name = bNameEntry.get()
     base = str(os.path.abspath(os.getcwd())) + "/Books/"
