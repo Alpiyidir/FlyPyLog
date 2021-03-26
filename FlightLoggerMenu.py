@@ -1,9 +1,8 @@
 # Imports
 from tkinter import *
-from tkinter import messagebox, simpledialog
+from tkinter import messagebox
 import FlightLogger
 import os
-import shutil
 
 
 # Window Setup
@@ -15,7 +14,7 @@ def createWindowForBook(nameOfBook):
     light1 = "#EBDFD8"
     textForUi = "FlyPyLog - " + nameOfBook
     windowName = nameOfBook + "Window"
-    windowName = Tk()
+    windowName = Toplevel()
     windowName.title("FlyPyLog-FlightLogger Menu")
     windowName.geometry("400x500")
     windowName.configure(bg="white")
@@ -24,7 +23,7 @@ def createWindowForBook(nameOfBook):
     currentBookLocation = os.getcwd() + f'\Books\{nameOfBook}'
 
     if not os.path.isdir(currentBookLocation):
-        messagebox.showerror(title="lol no", message="This book no longer exists.")
+        messagebox.showerror(title="lol no", message="This book no longer exists.", parent=windowName)
         windowName.destroy()
         return
 
@@ -34,10 +33,10 @@ def createWindowForBook(nameOfBook):
             curselection = list(curselectiontmp)[0]
         except IndexError:
             print("No item selected to delete. IndexError")
-            messagebox.showerror(title="lol no", message="No item selected to delete. IndexError")
+            messagebox.showerror(title="lol no", message="No item selected to delete. IndexError", parent=windowName)
             return
 
-        log_delYN = messagebox.askyesno(title="Delete", message="Do you wish to proceed with the deletion?")
+        log_delYN = messagebox.askyesno(title="Delete", message="Do you wish to proceed with the deletion?", parent=windowName)
         if log_delYN == True:
             TextFileNameWithoutTxt = LogBox.get(curselectiontmp)
             textFileToDelete = currentBookLocation + str(f"\\{TextFileNameWithoutTxt}.txt")
@@ -91,6 +90,11 @@ def createWindowForBook(nameOfBook):
                 logs.append(fileName)
                 LogBox.insert(END, *logs)
 
+    def loopdyloopstuff():
+        fileChecking()
+
+        windowName.after(500, loopdyloopstuff)
+
     Can2 = Canvas(windowName, bg=light2, borderwidth=0, height=43.5, width=200000, highlightthickness=0)
     Can2.place(x=0, y=0)
 
@@ -121,5 +125,5 @@ def createWindowForBook(nameOfBook):
     Del.bind("<Enter>", on_enterD)
     Del.bind("<Leave>", on_leaveD)
 
-    fileChecking()
+    windowName.after(0, loopdyloopstuff)
     windowName.mainloop()

@@ -1,11 +1,9 @@
 # Imports
-import tkinter
 from tkinter import *
 from tkinter import messagebox
 import os
 import shutil
 import FlightLoggerMenu
-import FlightLogger
 
 # Window Setup
 dark2 = "#103B82"
@@ -23,7 +21,7 @@ root.resizable(False, False)
 
 if os.path.isdir(os.getcwd() + "\Books") != True:
     os.mkdir("Books")
-    print("Created \Books directory")
+    print("Created \Books directory (first run or it was manually deleted)")
 
 def addBook():
     name = bNameEntry.get()
@@ -32,7 +30,6 @@ def addBook():
         os.mkdir(base + str(name))
     except WindowsError:
         print("Couldn't create file, file already exists or no name was specified. (root directory)")
-        messagebox.showerror(title="lol no", message="Couldn't create file, file already exists or no name was specified. (root directory)")
         return
     BooksBox.insert("end", name)
     bNameEntry.delete(0,"end")
@@ -46,12 +43,11 @@ def Delete():
         messagebox.showerror(title="lol no", message="No item selected to delete. IndexError")
         return
 
-    print(fselec)
     delYN = messagebox.askyesno(title="Delete", message="Do you wish to proceed with the deletion?")
     print(delYN)
     if delYN == True:
         toDel = BooksBox.get(selecind)
-        print(toDel)
+        print(toDel + " deleted.")
         delet = str(os.path.abspath(os.getcwd())) + "/Books/" + str(toDel)
         shutil.rmtree(delet)
         BooksBox.delete(fselec, last=None)
@@ -72,6 +68,8 @@ def OpenFlightLogger():
     nameOfBook = BooksBox.get(BooksBoxIndex)
 
     FlightLoggerMenu.createWindowForBook(nameOfBook)
+
+
 
 
 # Color Change on Hover
@@ -123,7 +121,10 @@ def fileChecking():
         if os.path.isdir(os.path.join(base, entry)):
             books.append(entry)
     BooksBox.insert(END, *books)
-fileChecking()
+
+    root.after(5000, fileChecking)
+
+
 
 # Menu Buttons
 FileB = Button(root, font=("Arial", 12), text='Files', highlightthickness=0, bg=dark2, fg='white', borderwidth=0,
@@ -167,5 +168,5 @@ Open.place(x=70, y=400)
 Open.bind("<Enter>", on_enterO)
 Open.bind("<Leave>", on_leaveO)
 
-
+root.after(0, fileChecking)
 root.mainloop()
