@@ -15,7 +15,7 @@ def createWindowForBook(nameOfBook):
     textForUi = "FlyPyLog - " + nameOfBook
     windowName = nameOfBook + "Window"
     windowName = Tk()
-    windowName.title("FlyPyLog")
+    windowName.title("FlyPyLog-FlightLogger Menu")
     windowName.geometry("400x500")
     windowName.configure(bg="white")
     windowName.resizable(False, False)
