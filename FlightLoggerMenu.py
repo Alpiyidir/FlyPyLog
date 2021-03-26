@@ -46,13 +46,13 @@ def createWindowForBook(nameOfBook):
 
     def add_log():
         while True:
-            newLogName = simpledialog.askstring("new log", "enter the name of your new desired log entry")
+            newLogName = simpledialog.askstring("new log", "log entry name")
             if newLogName == None:
                 return "User exited out of add_log."
             elif len(newLogName) > 0:
                 break
         while True:
-            initialAirport = simpledialog.askstring("new log", "enter the ICAO code for your initial airport (leave empty for no input, no airport location info will be provided)")
+            initialAirport = simpledialog.askstring("new log", "enter the ICAO code for your initial airport (leave empty for no input)")
             if initialAirport == None:
                 return "User exited out of add_log."
             elif len(initialAirport) == 4:
