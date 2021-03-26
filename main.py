@@ -30,9 +30,6 @@ def addBook():
         return
     BooksBox.insert("end", name)
 
-
-    fileChecking()
-
 def Delete():
     selecind = BooksBox.curselection()
     try:
@@ -52,14 +49,10 @@ def Delete():
         shutil.rmtree(delet)
         BooksBox.delete(fselec, last=None)
 
-    fileChecking()
-
 
 def OpenFilePath():
     base = str(os.path.abspath(os.getcwd()))
     os.startfile(base)
-
-    fileChecking()
 
 def OpenFlightLogger():
     try:
@@ -71,8 +64,6 @@ def OpenFlightLogger():
 
     LogName = BooksBox.get(BooksBoxIndex)
     FlightLoggerMenu.createWindowForBook(LogName)
-
-    fileChecking()
 
 
 # Color Change on Hover
