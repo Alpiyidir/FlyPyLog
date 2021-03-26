@@ -52,17 +52,22 @@ def createWindowForBook(nameOfBook):
             elif len(newLogName) > 0:
                 break
         while True:
-            initialAirport = simpledialog.askstring("new log", "enter the alpha-3 code for your initial airport (leave empty for no input, no airport location info will be provided)")
+            initialAirport = simpledialog.askstring("new log", "enter the ICAO code for your initial airport (leave empty for no input, no airport location info will be provided)")
             if initialAirport == None:
                 return "User exited out of add_log."
-            elif len(initialAirport) == 3 or len(initialAirport) == 0:
+            elif len(initialAirport) == 4:
+                noinputforfirst = False
                 break
-        while True:
-            destinationAirport = simpledialog.askstring("new log", "enter the alpha-3 code for your destination airport")
-            if destinationAirport == None:
-                return "User exited out of add_log."
-            elif len(destinationAirport) > 0:
+            elif len(initialAirport) == 0:
+                noinputforfirst = True
                 break
+        if noinputforfirst == False:
+            while True:
+                destinationAirport = simpledialog.askstring("new log", "enter the ICAO code for your destination airport")
+                if destinationAirport == None:
+                    return "User exited out of add_log."
+                elif len(destinationAirport) > 0:
+                    break
 
         os.chdir(currentBookLocation)
         try:
