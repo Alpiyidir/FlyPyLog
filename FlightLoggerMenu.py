@@ -22,10 +22,9 @@ def createWindowForBook(nameOfBook):
     # Error Checking
     currentBookLocation = os.getcwd() + f'\Books\{nameOfBook}'
 
-    while True:
-        if not os.path.isdir(currentBookLocation):
-            messagebox.showerror(title="lol no", message="This book no longer exists.")
-            windowName.destroy()
+    if not os.path.isdir(currentBookLocation):
+        messagebox.showerror(title="lol no", message="This book no longer exists.")
+        windowName.destroy()
 
     # Color Change on Hover
     def on_enterV(e):
