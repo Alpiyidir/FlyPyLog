@@ -20,11 +20,31 @@ def createWindowForBook(nameOfBook):
     windowName.resizable(False, False)
 
     # Color Change on Hover
-    Can = Canvas(windowName, bg=light2, borderwidth=0, height=43.5, width=200000, highlightthickness=0)
-    Can.place(x=0, y=0)
+    def on_enterV(e):
+        View['background'] = med
+    def on_leaveV(e):
+        View['background'] = dark2
 
-    Logo = Label(windowName, font=("Arial", 18, "bold"), text=textForUi, bg=light2, fg=dark2)
-    Logo.place(x=10, y=5)
+    def on_enterE(e):
+        Edit['background'] = med
+    def on_leaveE(e):
+        Edit['background'] = dark2
+
+    def on_enterN(e):
+        NewLog['background'] = med
+    def on_leaveN(e):
+        NewLog['background'] = dark2
+
+    def on_enterD(e):
+        Del['background'] = med
+    def on_leaveD(e):
+        Del['background'] = dark2
+
+    Can2 = Canvas(windowName, bg=light2, borderwidth=0, height=43.5, width=200000, highlightthickness=0)
+    Can2.place(x=0, y=0)
+
+    Logo2 = Label(windowName, font=("Arial", 18, "bold"), text=textForUi, bg=light2, fg=dark2)
+    Logo2.place(x=10, y=5)
 
     # Ye 2nd Mighty Listbox
     BooksBox = Listbox(windowName, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=20, selectbackground=light2)
@@ -33,12 +53,22 @@ def createWindowForBook(nameOfBook):
 
     View = Button(windowName, font=("Arial", 12), text='View', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=10, height=1)
     View.place(x=240, y=90)
+    View.bind("<Enter>", on_enterV)
+    View.bind("<Leave>", on_leaveV)
 
     Edit = Button(windowName, font=("Arial", 12), text='Edit', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=10, height=1)
     Edit.place(x=240, y=120)
+    Edit.bind("<Enter>", on_enterE)
+    Edit.bind("<Leave>", on_leaveE)
 
     NewLog = Button(windowName, font=("Arial", 12), text='New Log', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=10, height=1)
     NewLog.place(x=240, y=150)
+    NewLog.bind("<Enter>", on_enterN)
+    NewLog.bind("<Leave>", on_leaveN)
 
     Del = Button(windowName, font=("Arial", 12), text='Delete', highlightthickness=0, bg=dark2, fg='white', borderwidth=0, width=10, height=1)
     Del.place(x=240, y=180)
+    Del.bind("<Enter>", on_enterD)
+    Del.bind("<Leave>", on_leaveD)
+
+    windowName.mainloop()
