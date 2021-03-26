@@ -1,6 +1,7 @@
 # Imports
 from tkinter import *
 from tkinter import messagebox, simpledialog
+import FlightLogger
 import os
 import shutil
 
@@ -45,40 +46,7 @@ def createWindowForBook(nameOfBook):
 
 
     def add_log():
-        while True:
-            newLogName = simpledialog.askstring("new log", "log entry name")
-            if newLogName == None:
-                return "User exited out of add_log."
-            elif len(newLogName) > 0:
-                break
-        while True:
-            initialAirport = simpledialog.askstring("new log", "enter the ICAO code for your initial airport (leave empty for no input)")
-            if initialAirport == None:
-                return "User exited out of add_log."
-            elif len(initialAirport) == 4:
-                noinputforfirst = False
-                break
-            elif len(initialAirport) == 0:
-                noinputforfirst = True
-                break
-        if noinputforfirst == False:
-            while True:
-                destinationAirport = simpledialog.askstring("new log", "enter the ICAO code for your destination airport")
-                if destinationAirport == None:
-                    return "User exited out of add_log."
-                elif len(destinationAirport) > 0:
-                    break
-
-        os.chdir(currentBookLocation)
-        try:
-            tfile = open(f"{newLogName}.txt","w+")
-        except WindowsError:
-            print("Couldn't create log, log already exists.")
-            messagebox.showerror(title="lol no", message="Couldn't create log, log already exists.")
-            return
-        LogBox.insert("end", newLogName)
-        tfile.write(newLogName)
-        tfile.close()
+        FlightLogger.createInput()
 
 
     # Color Change on Hover

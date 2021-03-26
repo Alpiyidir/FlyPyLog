@@ -5,6 +5,7 @@ from tkinter import messagebox
 import os
 import shutil
 import FlightLoggerMenu
+import FlightLogger
 
 # Window Setup
 dark2 = "#103B82"
@@ -34,6 +35,7 @@ def addBook():
         messagebox.showerror(title="lol no", message="Couldn't create file, file already exists or no name was specified. (root directory)")
         return
     BooksBox.insert("end", name)
+    bNameEntry.delete(0,"end")
 
 def Delete():
     selecind = BooksBox.curselection()
@@ -67,8 +69,9 @@ def OpenFlightLogger():
         messagebox.showerror(title="lol no", message="No file selected to open in Flight Logger.")
         return
 
-    LogName = BooksBox.get(BooksBoxIndex)
-    FlightLoggerMenu.createWindowForBook(LogName)
+    nameOfBook = BooksBox.get(BooksBoxIndex)
+
+    FlightLoggerMenu.createWindowForBook(nameOfBook)
 
 
 # Color Change on Hover
