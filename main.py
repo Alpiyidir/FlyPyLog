@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import messagebox
 import os
 import shutil
+import FlightLoggerMenu
 
 # Window Setup
 dark2 = "#103B82"
@@ -62,7 +63,7 @@ def OpenFilePath():
 def OpenFlightLogger():
     BooksBoxIndex = BooksBox.curselection()[0]
     LogName = BooksBox.get(BooksBoxIndex)
-
+    FlightLoggerMenu.createWindowForBook(LogName)
 
 # Color Change on Hover
 def on_enterF(e):
