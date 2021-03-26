@@ -14,7 +14,7 @@ light2 = "#7DC6EB"
 light1 = "#EBDFD8"
 
 root = Tk()
-root.title("FlyPyLog")
+root.title("FlyPyLog-Main Menu")
 root.geometry("800x500")
 root.configure(bg="white")
 root.resizable(False, False)
