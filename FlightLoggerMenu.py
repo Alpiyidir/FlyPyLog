@@ -52,10 +52,10 @@ def createWindowForBook(nameOfBook):
             elif len(newLogName) > 0:
                 break
         while True:
-            initialAirport = simpledialog.askstring("new log", "enter the alpha-3 code for your initial airport")
+            initialAirport = simpledialog.askstring("new log", "enter the alpha-3 code for your initial airport (leave empty for no input, no airport location info will be provided)")
             if initialAirport == None:
                 return "User exited out of add_log."
-            elif len(initialAirport) > 0:
+            elif len(initialAirport) == 3 or len(initialAirport) == 0:
                 break
         while True:
             destinationAirport = simpledialog.askstring("new log", "enter the alpha-3 code for your destination airport")
