@@ -45,7 +45,8 @@ def createWindowForBook(nameOfBook):
 
 
     def add_log():
-        FlightLogger.createInput()
+        FlightLogger.createWindow(nameOfBook, "add")
+
 
 
     # Color Change on Hover
@@ -74,21 +75,38 @@ def createWindowForBook(nameOfBook):
         Del['background'] = dark2
 
     # Ye 2nd Mighty Listbox
-    LogBox = Listbox(windowName, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=20,
+    LogBox = Listbox(windowName, font=("Arial", 12, "bold"), activestyle="none", bg="light gray", bd=0, height=15, width=20,
                        selectbackground=light2)
     LogBox.place(x=40, y=90)
     LogBox.yview()
 
+    # File Checking On Start
     def fileChecking():
         logs = []
         logs.clear()
+        selectedIndex = LogBox.curselection()
+
         LogBox.delete(0, "end")
         base = str(os.path.abspath(os.getcwd())) + f"\Books\{nameOfBook}"
         for entry in os.listdir(base):
-            if os.path.exists(os.path.join(base, entry)):
-                fileName = entry[:-4]
-                logs.append(fileName)
-                LogBox.insert(END, *logs)
+            logs.append(entry[:-4])
+        LogBox.insert(END, *logs)
+
+
+        selectedIndexExists = True
+        try:
+            selectedIndex[0]
+        except:
+            selectedIndexExists = False
+
+        if selectedIndexExists:
+            LogBox.select_set(selectedIndex)
+
+
+        windowName.after(1, fileChecking)
+
+
+
 
     Can2 = Canvas(windowName, bg=light2, borderwidth=0, height=43.5, width=200000, highlightthickness=0)
     Can2.place(x=0, y=0)
@@ -120,4 +138,5 @@ def createWindowForBook(nameOfBook):
     Del.bind("<Enter>", on_enterD)
     Del.bind("<Leave>", on_leaveD)
 
+    windowName.after(0,fileChecking)
     windowName.mainloop()

@@ -44,7 +44,6 @@ def Delete():
         return
 
     delYN = messagebox.askyesno(title="Delete", message="Do you wish to proceed with the deletion?")
-    print(delYN)
     if delYN == True:
         toDel = BooksBox.get(selecind)
         print(toDel + " deleted.")
@@ -106,24 +105,34 @@ def on_leaveO(e):
 
 
 # Ye Mighty Listbox
-BooksBox = Listbox(root, font=("Arial", 12, "bold"), bg="light gray", bd=0, height=15, width=50,
+BooksBox = Listbox(root, font=("Arial", 12, "bold"), activestyle="none", bg="light gray", bd=0, height=15, width=50,
                    selectbackground=light2)
 BooksBox.place(x=70, y=90)
 BooksBox.yview()
 
 # Listbox File Checking on Start
 def fileChecking():
-    # TODO maybe try and implement something so the selected index is remembered after it refreshes, if not remove loop in all files
     books = []
     books.clear()
+    selectedIndex = BooksBox.curselection()
+
     BooksBox.delete(0, "end")
     base = str(os.path.abspath(os.getcwd())) + "/Books"
     for entry in os.listdir(base):
-        if os.path.isdir(os.path.join(base, entry)):
-            books.append(entry)
+        books.append(entry)
     BooksBox.insert(END, *books)
 
 
+    selectedIndexExists = True
+    try:
+        selectedIndex[0]
+    except:
+        selectedIndexExists = False
+
+    if selectedIndexExists:
+        BooksBox.select_set(selectedIndex)
+
+    root.after(1,fileChecking)
 
 # Menu Buttons
 FileB = Button(root, font=("Arial", 12), text='Files', highlightthickness=0, bg=dark2, fg='white', borderwidth=0,
@@ -167,5 +176,5 @@ Open.place(x=70, y=400)
 Open.bind("<Enter>", on_enterO)
 Open.bind("<Leave>", on_leaveO)
 
-fileChecking()
+root.after(0,fileChecking)
 root.mainloop()

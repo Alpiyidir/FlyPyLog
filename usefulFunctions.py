@@ -8,7 +8,7 @@ conn.row_factory = sqlite3.Row
 c = conn.cursor()
 
 def getUsefulInfoFromAirportCode(airportCode):
-    c.execute("SELECT airportCode, airportname, cityName, countryName, countryCode, latitude, longitude FROM airports WHERE airportCode = ?", [airportCode])
+    c.execute("SELECT airportCode, airportName, cityName, countryName, countryCode, latitude, longitude FROM airports WHERE airportCode = ?", [airportCode])
 
     return c.fetchall()[0]
 def getDistanceBetweenTwoAirports(firstAirportCode, secondAirportCode):
