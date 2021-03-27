@@ -41,6 +41,8 @@ def createInput():
     def cancel():
         inputWindow.destroy()
     def save():
+        nodepICAO = False
+        nodesICAO = False
         logName = log.get()
         depICAO = depAir.get()
         desICAO = desAir.get()
@@ -49,9 +51,13 @@ def createInput():
         depICAOlength = len(depICAO)
         desICAOlength = len(desICAO)
 
-        print(logName,depICAO,desICAO,logContent)
-
-        if depICAOlength != 0 and depICAOlength < 4 or depICAOlength > 4 and desICAOlength != 0 and desICAOlength < 4 or desICAOlength > 4:
+        # Checking User Input
+        if len(logName) == 0:
+            messagebox.showerror(title="lol no", message="Please enter a log name.",
+                parent=inputWindow)
+            return
+        # TODO AFTER JSON FILE SAVING IS DONE CHECK IF SAME LOGNAME IS ALREADY USED OR NOT
+        if (depICAOlength != 0 and depICAOlength < 4 or depICAOlength > 4) and (desICAOlength != 0 and desICAOlength < 4 or desICAOlength > 4):
             messagebox.showerror(title="lol no", message="Invalid Departure and Destination ICAO, try again.",
                                  parent=inputWindow)
             return
@@ -63,10 +69,51 @@ def createInput():
             messagebox.showerror(title="lol no", message="Invalid Destination ICAO, try again.",
                 parent=inputWindow)
             return
-        depInfo = getUsefulInfoFromAirportCode(depICAO)
-        desInfo = getUsefulInfoFromAirportCode(desICAO)
 
-        print(depInfo, desInfo)
+        if depICAOlength == 0:
+            nodepICAO = True
+            return
+        if desICAOlength == 0:
+            nodesICAO = True
+
+        if nodesICAO == False or nodepICAO == False:
+            types = ["airportCode", "airportName", "cityName", "countryName", "countryCode", "latitude", "longitude"]
+
+
+        if nodepICAO == False:
+            try:
+                depInfo = getUsefulInfoFromAirportCode(depICAO)
+            except IndexError:
+                messagebox.showerror(title="lol no", message="The Departure ICAO doesn't match any of the airports in the database.",
+                    parent=inputWindow)
+                return
+            depDict = {}
+            for i in range(len(types)):
+                depDict[types[i]] = depInfo[types[i]]
+
+
+        if nodesICAO == False:
+            try:
+                desInfo = getUsefulInfoFromAirportCode(desICAO)
+            except IndexError:
+                messagebox.showerror(title="lol no", message="The Destination ICAO doesn't match any of the airports in the database.",
+                    parent=inputWindow)
+                return
+            desDict = {}
+            for i in range(len(types)):
+                desDict[types[i]] = desInfo[types[i]]
+
+        # TODO CREATE JSON FILES INSIDE OF LOG FILE THAT HAS ALL THE DATA
+
+        if nodesICAO == False and nodepICAO == False:
+            totalDistance = getDistanceBetweenTwoAirports(depICAO,desICAO)
+
+
+
+
+
+
+
 
 
 
@@ -77,7 +124,7 @@ def createInput():
         inputWindow.destroy()
 
     logLabel = Label(inputWindow, font=("Arial", 12, "bold"), text="Log Name:", bg=light2, fg=dark1)
-    logLabel.place(x=45, y=10)
+    logLabel.place(x=42, y=10)
 
     log = Entry(inputWindow, font=("Arial", 12), highlightthickness=0, borderwidth=0)
     log.place(x=45, y=35)
@@ -95,7 +142,7 @@ def createInput():
     desAir.place(x=45, y=135)
 
     entryLabel = Label(inputWindow, font=("Arial", 12, "bold"), text="Log:", bg=light2, fg=dark1)
-    entryLabel.place(x=45, y=160)
+    entryLabel.place(x=42, y=160)
 
     entry = tkscrolled.ScrolledText(inputWindow, width=85, height=18, wrap='word')
     entry.place(x=45, y=185)

@@ -113,6 +113,7 @@ BooksBox.yview()
 
 # Listbox File Checking on Start
 def fileChecking():
+    # TODO maybe try and implement something so the selected index is remembered after it refreshes, if not remove loop in all files
     books = []
     books.clear()
     BooksBox.delete(0, "end")
@@ -121,8 +122,6 @@ def fileChecking():
         if os.path.isdir(os.path.join(base, entry)):
             books.append(entry)
     BooksBox.insert(END, *books)
-
-    root.after(5000, fileChecking)
 
 
 
@@ -168,5 +167,5 @@ Open.place(x=70, y=400)
 Open.bind("<Enter>", on_enterO)
 Open.bind("<Leave>", on_leaveO)
 
-root.after(0, fileChecking)
+fileChecking()
 root.mainloop()

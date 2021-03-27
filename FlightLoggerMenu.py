@@ -90,11 +90,6 @@ def createWindowForBook(nameOfBook):
                 logs.append(fileName)
                 LogBox.insert(END, *logs)
 
-    def loopdyloopstuff():
-        fileChecking()
-
-        windowName.after(500, loopdyloopstuff)
-
     Can2 = Canvas(windowName, bg=light2, borderwidth=0, height=43.5, width=200000, highlightthickness=0)
     Can2.place(x=0, y=0)
 
@@ -125,5 +120,4 @@ def createWindowForBook(nameOfBook):
     Del.bind("<Enter>", on_enterD)
     Del.bind("<Leave>", on_leaveD)
 
-    windowName.after(0, loopdyloopstuff)
     windowName.mainloop()
