@@ -7,7 +7,7 @@ import json
 import os
 
 
-def createWindow(nameOfBook, typeOfWindow):
+def createWindow(nameOfBook, typeOfWindow, logToEdit=None):
     # Window Setup
     dark2 = "#103B82"
     dark1 = "#2B5384"
@@ -19,14 +19,19 @@ def createWindow(nameOfBook, typeOfWindow):
     if typeOfWindow == "add":
         inputWindow.title("FlyPyLog - New Log")
         inputWindow.geometry("800x550")
-    # TODO OTHER TYPES OF WINDOWS
+    elif typeOfWindow == "view":
+        inputWindow.title(f"FlyPyLog - Viewing {nameOfBook}")
+    elif typeOfWindow == "edit":
+        inputWindow.title(f"FlyPyLog - Editing {logToEdit}")
+        inputWindow.geometry("800x550")
+
     inputWindow.configure(bg=light2)
     inputWindow.resizable(False, False)
     inputWindow.grab_set()
 
     if typeOfWindow == "add":
         def loopdyLoop():
-            # Capitalizion checker
+            # Capitalization checker
             ICAO_1 = depAir.get().upper()
             if len(ICAO_1) > 4:
                 ICAO_1 = ICAO_1[:4]
@@ -41,11 +46,11 @@ def createWindow(nameOfBook, typeOfWindow):
 
             inputWindow.after(1, loopdyLoop)
 
+
     def cancel():
         inputWindow.destroy()
 
     def save():
-        global logName
         logName = log.get()
         depICAO = depAir.get()
         desICAO = desAir.get()
@@ -56,7 +61,8 @@ def createWindow(nameOfBook, typeOfWindow):
 
         # Checking User Input
 
-        if len(logContent) == 0:
+        # If logcontent is left empty it will be equal to \n
+        if logContent == '\n':
             logContent = None
 
         if len(logName) == 0:
@@ -64,10 +70,11 @@ def createWindow(nameOfBook, typeOfWindow):
                                  parent=inputWindow)
             return
 
-        if os.path.isfile(os.getcwd() + f"\Books\{nameOfBook}\{logName}.txt"):
-            messagebox.showerror(title="lol no", message="A log with this name already exists.",
-                parent=inputWindow)
-            return
+        if typeOfWindow == "add":
+            if os.path.isfile(os.getcwd() + f"\Books\{nameOfBook}\{logName}.txt"):
+                messagebox.showerror(title="lol no", message="A log with this name already exists.",
+                                    parent=inputWindow)
+                return
 
         if (depICAOlength != 0 and depICAOlength < 4 or depICAOlength > 4) and (
                 desICAOlength != 0 and desICAOlength < 4 or desICAOlength > 4):
@@ -82,6 +89,10 @@ def createWindow(nameOfBook, typeOfWindow):
             messagebox.showerror(title="lol no", message="Invalid Destination ICAO, try again.",
                                  parent=inputWindow)
             return
+
+        if typeOfWindow == "edit":
+            os.remove(os.getcwd() + f"\Books\{nameOfBook}\{logName}.txt")
+
 
         if depICAOlength == 0:
             depICAOExists = False
@@ -99,7 +110,8 @@ def createWindow(nameOfBook, typeOfWindow):
             try:
                 depInfo = getUsefulInfoFromAirportCode(depICAO)
             except IndexError:
-                messagebox.showerror(title="lol no", message="The Departure ICAO doesn't match any of the airports in the database.",
+                messagebox.showerror(title="lol no",
+                                     message="The Departure ICAO doesn't match any of the airports in the database.",
                                      parent=inputWindow)
                 return
 
@@ -115,7 +127,8 @@ def createWindow(nameOfBook, typeOfWindow):
             try:
                 desInfo = getUsefulInfoFromAirportCode(desICAO)
             except IndexError:
-                messagebox.showerror(title="lol no", message="The Destination ICAO doesn't match any of the airports in the database.",
+                messagebox.showerror(title="lol no",
+                                     message="The Destination ICAO doesn't match any of the airports in the database.",
                                      parent=inputWindow)
                 return
 
@@ -132,19 +145,13 @@ def createWindow(nameOfBook, typeOfWindow):
         else:
             distanceTraveled = None
 
-        info = {}
-        info["logName"] = logName
-        info["logContent"] = logContent
-        info["departure"] = depDict
-        info["destination"] = desDict
-        info["distanceTraveled"] = distanceTraveled
-
+        info = {"logName": logName, "logContent": logContent, "departure": depDict, "destination": desDict,
+                "distanceTraveled": distanceTraveled}
 
         with open(os.getcwd() + f"\Books\{nameOfBook}\{logName}.txt", "w") as jsonout:
             json.dump(info, jsonout)
 
         inputWindow.destroy()
-
 
     if typeOfWindow == "add":
         logLabel = Label(inputWindow, font=("Arial", 12, "bold"), text="Log Name:", bg=light2, fg=dark1)
@@ -180,5 +187,39 @@ def createWindow(nameOfBook, typeOfWindow):
         save.place(x=430, y=500)
 
         inputWindow.after(1, loopdyLoop)
+    elif typeOfWindow == "edit":
+        fileToRead = os.getcwd() + f"\Books\{nameOfBook}\{logToEdit}.txt"
+
+        logLabel = Label(inputWindow, font=("Arial", 12, "bold"), text="Log Name:", bg=light2, fg=dark1)
+        logLabel.place(x=42, y=10)
+
+        log = Entry(inputWindow, font=("Arial", 12), highlightthickness=0, borderwidth=0)
+        log.place(x=45, y=35)
+
+        depAirLabel = Label(inputWindow, font=("Arial", 12, "bold"), text="Departure Airport ICAO Code:", bg=light2,
+                            fg=dark1)
+        depAirLabel.place(x=42, y=60)
+
+        depAir = Entry(inputWindow, font=("Arial", 12), highlightthickness=0, borderwidth=0)
+        depAir.place(x=45, y=85)
+
+        desAirLabel = Label(inputWindow, font=("Arial", 12, "bold"), text="Destination Airport ICAO Code:", bg=light2,
+                            fg=dark1)
+        desAirLabel.place(x=42, y=110)
+
+        desAir = Entry(inputWindow, font=("Arial", 12), highlightthickness=0, borderwidth=0)
+        desAir.place(x=45, y=135)
+
+        entryLabel = Label(inputWindow, font=("Arial", 12, "bold"), text="Log:", bg=light2, fg=dark1)
+        entryLabel.place(x=42, y=160)
+
+        entry = tkscrolled.ScrolledText(inputWindow, width=85, height=18, wrap='word')
+        entry.place(x=45, y=185)
+
+        cancel = Button(inputWindow, font=("Arial", 12, "bold"), text="Cancel", bg=light1, fg=dark1, command=cancel)
+        cancel.place(x=320, y=500)
+
+        save = Button(inputWindow, font=("Arial", 12, "bold"), text="Save", bg=light1, fg=dark1, command=save)
+        save.place(x=430, y=500)
 
     inputWindow.mainloop()

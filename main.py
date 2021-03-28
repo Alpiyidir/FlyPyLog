@@ -29,7 +29,9 @@ def addBook():
     try:
         os.mkdir(base + str(name))
     except WindowsError:
-        print("Couldn't create file, file already exists or no name was specified. (root directory)")
+        print("Couldn't create book, file already exists or no name was specified.")
+        messagebox.showerror(title="lol no",
+                             message="Couldn't create book, book already exists or no name was specified.")
         return
     BooksBox.insert("end", name)
     bNameEntry.delete(0,"end")
@@ -60,8 +62,8 @@ def OpenFlightLogger():
     try:
         BooksBoxIndex = BooksBox.curselection()[0]
     except IndexError:
-        print("No item selected to open flight logger for. IndexError")
-        messagebox.showerror(title="lol no", message="No file selected to open in Flight Logger.")
+        print("No book selected to open flight logger for. IndexError")
+        messagebox.showerror(title="lol no", message="No book selected to open in Flight Logger.")
         return
 
     nameOfBook = BooksBox.get(BooksBoxIndex)
@@ -115,7 +117,6 @@ def fileChecking():
     books = []
     books.clear()
     selectedIndex = BooksBox.curselection()
-
     BooksBox.delete(0, "end")
     base = str(os.path.abspath(os.getcwd())) + "/Books"
     for entry in os.listdir(base):

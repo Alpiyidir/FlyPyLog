@@ -27,6 +27,23 @@ def createWindowForBook(nameOfBook):
         windowName.destroy()
         return
 
+    def add_log():
+        FlightLogger.createWindow(nameOfBook, "add")
+
+    def view_log():
+        FlightLogger.createWindow(nameOfBook, "view")
+
+    def edit_log():
+        curselectiontmp = LogBox.curselection()
+        try:
+            curselection = list(curselectiontmp)[0]
+        except IndexError:
+            print("No item selected to edit. IndexError")
+            messagebox.showerror(title="lol no", message="No item selected to edit. IndexError", parent=windowName)
+            return
+        curselectionText = LogBox.get(curselection)
+        FlightLogger.createWindow(nameOfBook, "edit", curselectionText)
+
     def delete_log():
         curselectiontmp = LogBox.curselection()
         try:
@@ -36,18 +53,13 @@ def createWindowForBook(nameOfBook):
             messagebox.showerror(title="lol no", message="No item selected to delete. IndexError", parent=windowName)
             return
 
-        log_delYN = messagebox.askyesno(title="Delete", message="Do you wish to proceed with the deletion?", parent=windowName)
+        log_delYN = messagebox.askyesno(title="Delete", message="Do you wish to proceed with the deletion?",
+                                        parent=windowName)
         if log_delYN == True:
             TextFileNameWithoutTxt = LogBox.get(curselectiontmp)
             textFileToDelete = currentBookLocation + str(f"\\{TextFileNameWithoutTxt}.txt")
             os.remove(textFileToDelete)
             LogBox.delete(curselection, last=None)
-
-
-    def add_log():
-        FlightLogger.createWindow(nameOfBook, "add")
-
-
 
     # Color Change on Hover
     def on_enterV(e):
@@ -75,8 +87,9 @@ def createWindowForBook(nameOfBook):
         Del['background'] = dark2
 
     # Ye 2nd Mighty Listbox
-    LogBox = Listbox(windowName, font=("Arial", 12, "bold"), activestyle="none", bg="light gray", bd=0, height=15, width=20,
-                       selectbackground=light2)
+    LogBox = Listbox(windowName, font=("Arial", 12, "bold"), activestyle="none", bg="light gray", bd=0, height=15,
+                     width=20,
+                     selectbackground=light2)
     LogBox.place(x=40, y=90)
     LogBox.yview()
 
@@ -92,7 +105,6 @@ def createWindowForBook(nameOfBook):
             logs.append(entry[:-4])
         LogBox.insert(END, *logs)
 
-
         selectedIndexExists = True
         try:
             selectedIndex[0]
@@ -102,11 +114,7 @@ def createWindowForBook(nameOfBook):
         if selectedIndexExists:
             LogBox.select_set(selectedIndex)
 
-
         windowName.after(1, fileChecking)
-
-
-
 
     Can2 = Canvas(windowName, bg=light2, borderwidth=0, height=43.5, width=200000, highlightthickness=0)
     Can2.place(x=0, y=0)
@@ -115,13 +123,13 @@ def createWindowForBook(nameOfBook):
     Logo2.place(x=10, y=5)
 
     View = Button(windowName, font=("Arial", 12), text='View', highlightthickness=0, bg=dark2, fg='white',
-                  borderwidth=0, width=10, height=1)
+                  borderwidth=0, width=10, height=1, command=view_log)
     View.place(x=240, y=90)
     View.bind("<Enter>", on_enterV)
     View.bind("<Leave>", on_leaveV)
 
     Edit = Button(windowName, font=("Arial", 12), text='Edit', highlightthickness=0, bg=dark2, fg='white',
-                  borderwidth=0, width=10, height=1)
+                  borderwidth=0, width=10, height=1, command=edit_log)
     Edit.place(x=240, y=120)
     Edit.bind("<Enter>", on_enterE)
     Edit.bind("<Leave>", on_leaveE)
@@ -138,5 +146,5 @@ def createWindowForBook(nameOfBook):
     Del.bind("<Enter>", on_enterD)
     Del.bind("<Leave>", on_leaveD)
 
-    windowName.after(0,fileChecking)
+    windowName.after(0, fileChecking)
     windowName.mainloop()
