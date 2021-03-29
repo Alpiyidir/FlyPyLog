@@ -18,10 +18,10 @@ root.geometry("800x500")
 root.configure(bg="white")
 root.resizable(False, False)
 
-
-if os.path.isdir(os.getcwd() + "\Books") != True:
+if not os.path.isdir(os.getcwd() + "\Books"):
     os.mkdir("Books")
     print("Created \Books directory (first run or it was manually deleted)")
+
 
 def addBook():
     name = bNameEntry.get()
@@ -34,7 +34,8 @@ def addBook():
                              message="Couldn't create book, book already exists or no name was specified.")
         return
     BooksBox.insert("end", name)
-    bNameEntry.delete(0,"end")
+    bNameEntry.delete(0, "end")
+
 
 def Delete():
     selecind = BooksBox.curselection()
@@ -58,6 +59,7 @@ def OpenFilePath():
     base = str(os.path.abspath(os.getcwd()))
     os.startfile(base)
 
+
 def OpenFlightLogger():
     try:
         BooksBoxIndex = BooksBox.curselection()[0]
@@ -69,8 +71,6 @@ def OpenFlightLogger():
     nameOfBook = BooksBox.get(BooksBoxIndex)
 
     FlightLoggerMenu.createWindowForBook(nameOfBook)
-
-
 
 
 # Color Change on Hover
@@ -112,6 +112,7 @@ BooksBox = Listbox(root, font=("Arial", 12, "bold"), activestyle="none", bg="lig
 BooksBox.place(x=70, y=90)
 BooksBox.yview()
 
+
 # Listbox File Checking on Start
 def fileChecking():
     books = []
@@ -123,7 +124,6 @@ def fileChecking():
         books.append(entry)
     BooksBox.insert(END, *books)
 
-
     selectedIndexExists = True
     try:
         selectedIndex[0]
@@ -133,7 +133,8 @@ def fileChecking():
     if selectedIndexExists:
         BooksBox.select_set(selectedIndex)
 
-    root.after(1,fileChecking)
+    root.after(1, fileChecking)
+
 
 # Menu Buttons
 FileB = Button(root, font=("Arial", 12), text='Files', highlightthickness=0, bg=dark2, fg='white', borderwidth=0,
@@ -177,5 +178,5 @@ Open.place(x=70, y=400)
 Open.bind("<Enter>", on_enterO)
 Open.bind("<Leave>", on_leaveO)
 
-root.after(0,fileChecking)
+root.after(0, fileChecking)
 root.mainloop()
