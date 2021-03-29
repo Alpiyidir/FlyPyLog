@@ -31,7 +31,15 @@ def createWindowForBook(nameOfBook):
         FlightLogger.createWindow(nameOfBook, "add")
 
     def view_log():
-        FlightLogger.createWindow(nameOfBook, "view")
+        curselectiontmp = LogBox.curselection()
+        try:
+            curselection = list(curselectiontmp)[0]
+        except IndexError:
+            print("No item selected to view. IndexError")
+            messagebox.showerror(title="lol no", message="No item selected to view. IndexError", parent=windowName)
+            return
+        curselectionText = LogBox.get(curselection)
+        FlightLogger.createWindow(nameOfBook, "view", curselectionText)
 
     def edit_log():
         curselectiontmp = LogBox.curselection()
@@ -57,7 +65,7 @@ def createWindowForBook(nameOfBook):
                                         parent=windowName)
         if log_delYN == True:
             TextFileNameWithoutTxt = LogBox.get(curselectiontmp)
-            textFileToDelete = currentBookLocation + str(f"\\{TextFileNameWithoutTxt}.txt")
+            textFileToDelete = currentBookLocation + str(f"\\{TextFileNameWithoutTxt}.json")
             os.remove(textFileToDelete)
             LogBox.delete(curselection, last=None)
 
@@ -102,7 +110,8 @@ def createWindowForBook(nameOfBook):
         LogBox.delete(0, "end")
         base = str(os.path.abspath(os.getcwd())) + f"\Books\{nameOfBook}"
         for entry in os.listdir(base):
-            logs.append(entry[:-4])
+            # Removes the last 5 characters, so removes .json while displaying
+            logs.append(entry[:-5])
         LogBox.insert(END, *logs)
 
         selectedIndexExists = True
