@@ -30,8 +30,8 @@ def createWindow(nameOfBook, typeOfWindow, logToViewOrEdit=None):
     inputWindow.resizable(False, False)
     inputWindow.grab_set()
 
-    if typeOfWindow == "add":
-        def loopdyLoop():
+    if typeOfWindow == "add" or "edit":
+        def capitalizerLoop():
             # Capitalization checker
             ICAO_1 = depAir.get().upper()
             if len(ICAO_1) > 4:
@@ -45,7 +45,7 @@ def createWindow(nameOfBook, typeOfWindow, logToViewOrEdit=None):
             desAir.delete(0, END)
             desAir.insert(0, ICAO_2)
 
-            inputWindow.after(1, loopdyLoop)
+            inputWindow.after(1, capitalizerLoop)
 
     def cancel():
         inputWindow.destroy()
@@ -188,7 +188,7 @@ def createWindow(nameOfBook, typeOfWindow, logToViewOrEdit=None):
         save = Button(inputWindow, font=("Arial", 12, "bold"), text="Save", bg=light1, fg=dark1, command=save)
         save.place(x=430, y=500)
 
-        inputWindow.after(1, loopdyLoop)
+        inputWindow.after(1, capitalizerLoop)
     elif typeOfWindow == "edit":
         logLabel = Label(inputWindow, font=("Arial", 12, "bold"), text="Log Name:", bg=light2, fg=dark1)
         logLabel.place(x=60.5, y=10)
@@ -232,6 +232,7 @@ def createWindow(nameOfBook, typeOfWindow, logToViewOrEdit=None):
         if data["logContent"]:
             entry.insert('1.0', data["logContent"])
         f.close()
+        inputWindow.after(1, capitalizerLoop)
     elif typeOfWindow == "view":
         logLabel = Label(inputWindow, font=("Arial", 12, "bold"), text="Log Name:", bg=light2, fg=dark1)
         logLabel.place(x=60.5, y=10)
