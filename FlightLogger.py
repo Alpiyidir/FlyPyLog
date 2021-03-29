@@ -192,37 +192,35 @@ def createWindow(nameOfBook, typeOfWindow, logToViewOrEdit=None):
         inputWindow.after(1, loopdyLoop)
     elif typeOfWindow == "edit":
         logLabel = Label(inputWindow, font=("Arial", 12, "bold"), text="Log Name:", bg=light2, fg=dark1)
-        logLabel.place(x=42, y=10)
+        logLabel.place(x=60.5, y=10)
 
         log = Entry(inputWindow, font=("Arial", 12), highlightthickness=0, borderwidth=0)
-        log.place(x=45, y=35)
+        log.place(x=63.5, y=35)
 
         depAirLabel = Label(inputWindow, font=("Arial", 12, "bold"), text="Departure Airport ICAO Code:", bg=light2,
                             fg=dark1)
-        depAirLabel.place(x=42, y=60)
+        depAirLabel.place(x=60.5, y=60)
 
         depAir = Entry(inputWindow, font=("Arial", 12), highlightthickness=0, borderwidth=0)
-        depAir.place(x=45, y=85)
+        depAir.place(x=63.5, y=85)
 
         desAirLabel = Label(inputWindow, font=("Arial", 12, "bold"), text="Destination Airport ICAO Code:", bg=light2,
                             fg=dark1)
-        desAirLabel.place(x=42, y=110)
+        desAirLabel.place(x=60.5, y=110)
 
         desAir = Entry(inputWindow, font=("Arial", 12), highlightthickness=0, borderwidth=0)
-        desAir.place(x=45, y=135)
+        desAir.place(x=63.5, y=135)
 
         entryLabel = Label(inputWindow, font=("Arial", 12, "bold"), text="Log:", bg=light2, fg=dark1)
-        entryLabel.place(x=42, y=160)
+        entryLabel.place(x=60.5, y=160)
 
         entry = tkscrolled.ScrolledText(inputWindow, width=84, height=18, wrap='word')
-        entry.place(x=45, y=185)
+        entry.place(x=63.5, y=185)
 
         cancel = Button(inputWindow, font=("Arial", 12, "bold"), text="Cancel", bg=light1, fg=dark1, command=cancel)
         cancel.place(x=320, y=500)
         save = Button(inputWindow, font=("Arial", 12, "bold"), text="Save", bg=light1, fg=dark1, command=save)
         save.place(x=430, y=500)
-
-
 
         fileToRead = os.getcwd() + f"\Books\{nameOfBook}\{logToViewOrEdit}.json"
         f = open(fileToRead)
@@ -352,7 +350,7 @@ def createWindow(nameOfBook, typeOfWindow, logToViewOrEdit=None):
 
 
                 inputWindow.after(100, lambda: radioButtonLoop(v.get()))
-
+            inputWindow.after(0, lambda: radioButtonLoop(v.get()))
         if data["logContent"]:
             entry.insert('1.0', data["logContent"])
 
@@ -362,5 +360,5 @@ def createWindow(nameOfBook, typeOfWindow, logToViewOrEdit=None):
         entry.config(state="disabled")
         f.close()
 
-    inputWindow.after(0, lambda: radioButtonLoop(v.get()))
+
     inputWindow.mainloop()
